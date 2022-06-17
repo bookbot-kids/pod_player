@@ -81,6 +81,8 @@ class PodPlayerController {
 
   PodVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
 
+  VideoPlayerController? get videoPlayerController => _ctr.videoCtr;
+
   // Future<void> initialize() async => _ctr.videoCtr?.initialize;
 
   //! video positions
