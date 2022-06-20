@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:subtitle_wrapper_package/subtitle_wrapper_package.dart';
 import 'package:universal_html/html.dart' as _html;
 import 'package:wakelock/wakelock.dart';
 

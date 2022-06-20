@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:subtitle_wrapper_package/subtitle_wrapper_package.dart';
 import 'package:universal_html/html.dart' as _html;
 
 import '../pod_player.dart';
@@ -34,6 +35,10 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
+  final bool showSubtitle;
+  final SubtitleController? subtitleController;
+  final SubtitleStyle? subtitleStyle;
+  final Color? subTitleBackgroundColor;
   PodVideoPlayer({
     Key? key,
     required this.controller,
@@ -48,6 +53,10 @@ class PodVideoPlayer extends StatefulWidget {
     this.onVideoError,
     this.backgroundColor,
     this.videoThumbnail,
+    this.showSubtitle = false,
+    this.subtitleController,
+    this.subtitleStyle,
+    this.subTitleBackgroundColor,
   }) : super(key: key) {
     addToUiController();
   }
@@ -63,7 +72,10 @@ class PodVideoPlayer extends StatefulWidget {
       ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
       ..videoTitle = videoTitle
-      ..videoThumbnail = videoThumbnail;
+      ..showSubtitle = showSubtitle
+      ..subtitleController = subtitleController
+      ..subtitleStyle = subtitleStyle
+      ..subTitleBackgroundColor = subTitleBackgroundColor;
   }
 
   @override
@@ -149,7 +161,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
         ),
       ),
     );
-    return GetBuilder<PodGetXVideoController>(
+    final podPlayerWidget = GetBuilder<PodGetXVideoController>(
       tag: widget.controller.getTag,
       builder: (_) {
         _frameAspectRatio = widget.matchFrameAspectRatioToVideo
@@ -185,6 +197,19 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
         );
       },
     );
+    if (_podCtr.showSubtitle) {
+      return SubtitleWrapper(
+        videoChild: podPlayerWidget,
+        subtitleStyle: _podCtr.subtitleStyle ??
+            const SubtitleStyle(),
+        subtitleController:
+        _podCtr.subtitleController ??
+            SubtitleController(),
+        videoPlayerController: _podCtr.videoCtr!,
+      );
+    } else {
+      return podPlayerWidget;
+    }
   }
 
   Widget _thumbnailAndLoadingWidget() {

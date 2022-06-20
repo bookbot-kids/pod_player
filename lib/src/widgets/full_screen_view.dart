@@ -2,6 +2,7 @@ part of 'package:pod_player/src/pod_player.dart';
 
 class FullScreenView extends StatefulWidget {
   final String tag;
+
   const FullScreenView({
     Key? key,
     required this.tag,
@@ -14,6 +15,7 @@ class FullScreenView extends StatefulWidget {
 class _FullScreenViewState extends State<FullScreenView>
     with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
+
   @override
   void initState() {
     _podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);
@@ -63,12 +65,33 @@ class _FullScreenViewState extends State<FullScreenView>
                   child: _podCtr.videoCtr == null
                       ? circularProgressIndicator
                       : _podCtr.videoCtr!.value.isInitialized
-                          ? _PodCoreVideoPlayer(
-                              tag: widget.tag,
-                              videoPlayerCtr: _podCtr.videoCtr!,
-                              videoAspectRatio:
-                                  _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
-                            )
+                          ? Builder(builder: (context) {
+                              if (_podCtr.showSubtitle) {
+                                return SubtitleWrapper(
+                                  videoChild: _PodCoreVideoPlayer(
+                                    tag: widget.tag,
+                                    videoPlayerCtr: _podCtr.videoCtr!,
+                                    videoAspectRatio:
+                                        _podCtr.videoCtr?.value.aspectRatio ??
+                                            16 / 9,
+                                  ),
+                                  subtitleStyle: _podCtr.subtitleStyle ??
+                                      const SubtitleStyle(),
+                                  subtitleController:
+                                      _podCtr.subtitleController ??
+                                          SubtitleController(),
+                                  videoPlayerController: _podCtr.videoCtr!,
+                                );
+                              } else {
+                                return _PodCoreVideoPlayer(
+                                  tag: widget.tag,
+                                  videoPlayerCtr: _podCtr.videoCtr!,
+                                  videoAspectRatio:
+                                      _podCtr.videoCtr?.value.aspectRatio ??
+                                          16 / 9,
+                                );
+                              }
+                            })
                           : circularProgressIndicator,
                 ),
               ),

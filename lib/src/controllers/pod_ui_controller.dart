@@ -6,4 +6,8 @@ class _PodUiController extends _PodGesturesController {
   Widget Function(OverLayOptions options)? overlayBuilder;
   Widget? videoTitle;
   DecorationImage? videoThumbnail;
+  bool showSubtitle = false;
+  SubtitleController? subtitleController;
+  SubtitleStyle? subtitleStyle;
+  Color? subTitleBackgroundColor;
 }

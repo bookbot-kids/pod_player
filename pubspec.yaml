@@ -19,6 +19,7 @@ dependencies:
   wakelock:
   universal_html:
   youtube_explode_dart:
+  subtitle_wrapper_package: ^2.1.0
 
 dev_dependencies:
   flutter_test:
